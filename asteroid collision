@@ -1,0 +1,15 @@
+class Solution:
+    def asteroidCollision(self, asteroids: List[int]) -> List[int]:
+        st = []
+        for ast in asteroids:
+            while st and ast < 0 and st[-1] > 0:
+                if st[-1] < -ast:      # stack top explodes
+                    st.pop()
+                    continue
+                elif st[-1] == -ast:   # both explode
+                    st.pop()
+                break                  # current asteroid explodes or both do
+            else:
+                st.append(ast)         # no collision; push asteroid
+
+        return st
