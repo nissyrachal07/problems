@@ -1,0 +1,43 @@
+class Solution:
+    def maxPathScore(self, grid, k):
+        m, n = len(grid), len(grid[0])
+
+        # Cost function
+        def cell_cost(val):
+            return 0 if val == 0 else 1
+
+        # prev[j][c] = max score at current row, column j, cost c
+        prev = [[-1] * (k + 1) for _ in range(n)]
+
+        start_c = cell_cost(grid[0][0])
+        if start_c > k:
+            return -1
+        prev[0][start_c] = grid[0][0]
+
+        for i in range(m):
+            curr = [[-1] * (k + 1) for _ in range(n)]
+            for j in range(n):
+                add_score = grid[i][j]
+                add_cost = cell_cost(grid[i][j])
+
+                # Skip starting cell (already initialized)
+                if i == 0 and j == 0:
+                    curr[0] = prev[0][:]
+                    continue
+
+                for c in range(add_cost, k + 1):
+                    best = -1
+
+                    # From top
+                    if i > 0 and prev[j][c - add_cost] != -1:
+                        best = max(best, prev[j][c - add_cost] + add_score)
+
+                    # From left
+                    if j > 0 and curr[j - 1][c - add_cost] != -1:
+                        best = max(best, curr[j - 1][c - add_cost] + add_score)
+
+                    curr[j][c] = best
+
+            prev = curr
+
+        return max(prev[n - 1])
