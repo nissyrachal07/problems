@@ -1,0 +1,29 @@
+from typing import List
+
+class Solution:
+    def minOperations(self, grid: List[List[int]], x: int) -> int:
+        arr = []
+        
+        # Convert 2D grid into 1D list
+        for row in grid:
+            for num in row:
+                arr.append(num)
+        
+        # Check if all numbers have same remainder when divided by x
+        rem = arr[0] % x
+        for num in arr:
+            if num % x != rem:
+                return -1
+        
+        # Sort the array
+        arr.sort()
+        
+        # Median gives minimum operations
+        target = arr[len(arr) // 2]
+        
+        # Count operations
+        operations = 0
+        for num in arr:
+            operations += abs(num - target) // x
+        
+        return operations
