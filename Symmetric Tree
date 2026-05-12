@@ -1,0 +1,14 @@
+class Solution:
+    def isSymmetric(self, root):
+        def Samet(p, q):
+            if not p and not q:
+                return True
+            if not p or not q:
+                return False
+            if p.val != q.val:
+                return False
+
+            return Samet(p.left, q.right) and Samet(p.right, q.left)
+
+        return Samet(root, root)
+        
